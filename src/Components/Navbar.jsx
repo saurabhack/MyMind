@@ -8,7 +8,7 @@ function Navbar() {
     const [isOpen, setIsOpen] = useState(false);
 
     return (
-        <div className="w-full flex h-[10vh] shadow-lg items-center px-4 bg-white relative">
+        <div className="w-full flex h-[10vh] shadow-lg items-center px-4 bg-white fixed">
             {/* Logo Section */}
             <div className="flex items-center w-1/4 md:w-1/6 h-full">
             <RiMindMap className="text-5xl"/>
