@@ -10,6 +10,10 @@ import { LiaProjectDiagramSolid } from "react-icons/lia";
 import { GoMoon } from "react-icons/go";
 import { LiaCommentSolid } from "react-icons/lia";
 import { FaRegImage } from "react-icons/fa";
+import { signInWithPopup } from "firebase/auth";
+import { auth, googleProvider } from "../firebaseConfig";
+import { useLocation, useNavigate } from "react-router-dom";
+import { useAuth } from "./AuthContext";
 function Main(){
     const [position,setPosition]=useState(0)
     const [isActive,setIsActive]=useState(0)
@@ -92,7 +96,27 @@ const action=[
 },
 
 ]
-    return(
+const {user} = useAuth()
+const navigate=useNavigate()
+const location =useLocation()
+async function  handleAuthenticationWithGoogle(){
+  
+  try {
+    const result=await signInWithPopup(auth,googleProvider)
+    const user=result.user;
+    const from = location.state?.from || "/dashboard";
+    navigate(from);
+    console.log("user information = ",user)
+  } catch (error) {
+    console.log("something went wrong  ===", error)  
+  }
+  
+}
+
+
+
+
+return(
         <>
         <div className="w-full h-[100vh] pt-[10rem]">
         <div
@@ -111,7 +135,7 @@ const action=[
   }}
 >
                 <div className="w-[30%] max-sm:w-[100%] h-[20%] max-sm:h-[30%] max-md:w-[50%] max-lg:w-[60%] max-xl:w-[65%]   bg-white px-10 max-sm:bg-[100%] rounded-full shadow-2xl flex justify-center items-center">
-                    <button className="bg-[#00AAFF] px-10 py-5 max-sm:py-5 max-md:text-lg max-md:gap- max-sm:w-[30rem] rounded-full text-xl text-white flex max-sm:items-center gap-4 max-sm:gap-0 max-sm:text-[17px] shadow-2xl  "><img className="h-[25px]" src="https://sm.pcmag.com/pcmag_me/review/g/google-doc/google-docs-sheets-and-slides_f6we.png" alt="" />Continue With Google</button>
+                    <button onClick={handleAuthenticationWithGoogle} className="bg-[#00AAFF] px-10 py-5 max-sm:py-5 max-md:text-lg max-md:gap- max-sm:w-[30rem] rounded-full text-xl text-white flex max-sm:items-center gap-4 max-sm:gap-0 max-sm:text-[17px] shadow-2xl  "><img className="h-[25px]" src="https://sm.pcmag.com/pcmag_me/review/g/google-doc/google-docs-sheets-and-slides_f6we.png" alt="" />Continue With Google</button>
                 </div>
             </div>
         </div>
@@ -180,6 +204,40 @@ const action=[
   </div>
 </div>
 
+<div className="w-full flex justify-center items-center h-[50vh] mt-28 max-sm:mt-[30rem]">
+  <div className="w-[60%] flex flex-col gap-6">
+    <div>
+    <p className="text-3xl text-gray-400 font-medium">Unlock Your Imagination</p>
+    <h1 className="text-5xl max-sm:text-4xl font-medium">Mind Map Online.</h1>
+    </div>
+    
+    <p className="text-xl text-gray-400 max-sm:text-lg">MindMeister makes creating stunning mind maps easy. Our intuitive editor allows you to map your big ideas together with your team, quickly and beautifully. From project planning, to brainstorming, to meeting management, set your collaborative creativity free and create epic mind maps. </p>
+  </div>
+</div>
+
+<div className="w-full h-[50vh] flex justify-center max-sm:mt-20">
+  <div className="w-[60%] max-lg:w-[100%] h-[90%] max-xl:w-[100%] max-xl:p-4 grid grid-cols-2 gap-10 max-lg:p-4 max-sm:grid-cols-1">
+    <div className="p-4 flex flex-col gap-5  bg-[rgba(0,0,0,0.05)] rounded-xl w-[100%]">
+      <div>
+      <p className="text-xl text-gray-400">Develop your big ideas</p>
+      <h1 className="text-2xl text-gray-600">What Is Online Mind Mapping?</h1>
+      </div>
+      <div className="">
+      <p className="text-lg text-gray-400 ">Mind mapping is a powerful technique that helps you visualize your thoughts and communicate them to others. MindMeister’s easy-to-use, web-based mind map maker provides an infinite canvas for brainstorming, note taking, project planning and countless other creative tasks, no download required. With MindMeister mobile, you can take your ideas with you wherever you go. </p>
+      </div>
+    </div>
+    <div className="p-4 bg-[rgba(0,0,0,0.05)] rounded-xl flex flex-col gap-5 w-[100%]">
+      <div>
+      <p className="text-xl text-gray-400">Why Mind Mapping?</p>
+      <h1 className="text-2xl text-gray-500">The Benefits of Online Mind Mapping</h1>
+      </div>
+      <div>
+      <p className="text-lg text-gray-400">Mind mapping improves creativity, productivity and collaboration. In one study, 92 percent of respondents said that mind mapping helps “distill information and reach clarity faster,” while 81 percent said it helps “manage projects more efficiently.” It's not just for business: mind maps help students improve knowledge retention and recall, according to some studies by up to 32 percent. </p>
+      </div>
+      
+    </div>
+  </div>
+</div>
         </>
     )
 }
